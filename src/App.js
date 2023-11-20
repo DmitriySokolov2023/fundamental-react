@@ -11,7 +11,8 @@ function App() {
         {id: 2, title: 'C++', body: 'C++ - язык программирования'},
         {id: 3, title: 'Java', body: 'Java - язык программирования'},
         {id: 4, title: 'C#', body: 'C# - язык программирования'},
-        {id: 5, title: 'Python', body: 'Python - язык программирования'}
+        {id: 5, title: 'Python', body: 'Python - язык программирования'},
+        {id: 6, title: 'Go', body: 'GO - язык программирования'},
     ])
 
     const [title, setTitle] = useState('')
