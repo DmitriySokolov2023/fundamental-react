@@ -1,8 +1,7 @@
-import Posts from "./components/Posts";
-import {useRef, useState} from "react";
+import { useState} from "react";
 import PostList from "./components/PostList";
-import MyButton from "./components/UI/button/MyButton";
-import MyInput from "./components/UI/input/MyInput";
+import PostForm from "./components/PostForm";
+import MySelect from "./components/UI/select/MySelect";
 
 
 function App() {
@@ -15,43 +14,35 @@ function App() {
         {id: 6, title: 'Go', body: 'GO - язык программирования'},
     ])
 
-    const [title, setTitle] = useState('')
-    const [body, setBody] = useState('')
+    const [select, setSelect] = useState('')
+    const createPost = (post) => {
+        setPosts([...posts, post])
+    }
 
-
-    const addNewPost = (e) =>{
-        e.preventDefault()
-
-        const newPost = {
-            id: Date.now(),
-            title,
-            body
-        }
-
-        setPosts([...posts, newPost])
+    const removePost = (post) =>{
+        setPosts(posts.filter(p => p.id !== post.id))
     }
 
     return (
         <div className="App">
-            <form>
-                <MyInput
-                    type="text"
-                    placeholder={'Название поста'}
-                    onChange={e => setTitle(e.target.value)}
-                />
-                <MyInput
-                    value={body}
-                    type="text"
-                    placeholder={'Описание поста'}
-                    onChange={e => setBody(e.target.value)}
-                />
-                <MyButton
-                    onClick={addNewPost}
-                >
-                    Add post
-                </MyButton>
-            </form>
-            <PostList posts={posts} title={'Список постов 1'}/>
+            <PostForm create={createPost}/>
+            <hr style={{margin:'15px 0px'}}/>
+            <MySelect
+                value={select}
+                onChange={sort => setSelect(sort)}
+                defaultValue={'Сортировка'}
+                option={[
+                {value:'title', name:'По названию'},
+                {value:'body', name:'По описанию'},
+            ]}
+
+            />
+            {posts.length !== 0
+                ?
+                <PostList remove={removePost} posts={posts} title={'Список постов'}/>
+                :
+                <h1 style={{textAlign:"center"}}>Посты не найдены</h1>}
+
         </div>
     );
 }

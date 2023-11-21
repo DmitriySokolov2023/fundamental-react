@@ -1,0 +1,10 @@
+.sel{
+    padding: 5px 10px;
+    color: teal;
+    border-color: teal;
+}
+
+.opt{
+    color: teal;
+    font-size: 14px;
+}

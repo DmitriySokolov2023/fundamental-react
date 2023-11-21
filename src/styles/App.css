@@ -1,7 +1,9 @@
 * {
+    font-family: Arial, serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: #181818;
 }
 
 #root{
@@ -20,4 +22,5 @@
     margin-top: 15px;
     justify-content: space-between;
     align-items: center;
+    color: black;
 }
