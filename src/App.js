@@ -5,7 +5,9 @@ import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import {usePosts} from "./hooks/usePost";
-import axios from "axios";
+import PostService from "./API/PostService";
+import MyLoader from "./components/UI/loader/MyLoader";
+import {useFetching} from "./hooks/useFetching";
 
 
 function App() {
@@ -13,15 +15,20 @@ function App() {
 
     const [filter, setFilter] = useState({sort:'', query:''})
     const [modal, setModal] = useState(false)
+    const [countPosts, setCountPosts] = useState(0)
     const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
-    async function fetchPosts(){
-        const response = await  axios.get('https://jsonplaceholder.typicode.com/posts')
+    const [fetchPosts, isPostLoading, postError] = useFetching(async ()=>{
+        const response = await  PostService.getAll()
         setPosts(response.data)
-    }
+        setCountPosts(response.headers['x-total-count'])
+
+
+        console.log(response.headers['x-total-count'])
+    })
 
     useEffect(() => {
         fetchPosts()
-    }, [filter]);
+    }, []);
 
     const createPost = (post) => {
         setPosts([...posts, post])
@@ -32,13 +39,8 @@ function App() {
         setPosts(posts.filter(p => p.id !== post.id))
     }
 
-
-
-
-
     return (
         <div className="App">
-            <button onClick={fetchPosts}>GET LIST POSTS</button>
             <MyButton
                 onClick={()=> setModal(true)}
                 style={{marginTop:'30px'}}
@@ -47,7 +49,14 @@ function App() {
                 <PostForm create={createPost}/>
             </MyModal>
             <PostFilter filter={filter} setFilter={setFilter}/>
-            <PostList remove={removePost} posts={sortedAndSearchPosts} title={'Список постов'}/>
+            {postError &&
+                <h1>Произошла ошибка</h1>
+            }
+            {isPostLoading
+                ? <MyLoader/>
+                : <PostList remove={removePost} posts={sortedAndSearchPosts} title={'Список постов'}/>
+            }
+
         </div>
     );
 }
