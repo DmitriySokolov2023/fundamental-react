@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import PostFilter from "./components/PostFilter";
@@ -9,6 +9,7 @@ import PostService from "./API/PostService";
 import MyLoader from "./components/UI/loader/MyLoader";
 import {useFetching} from "./hooks/useFetching";
 import {getPageCount} from "./utils/pages";
+import {usePagination} from "./hooks/usePagination";
 
 
 function App() {
@@ -20,14 +21,18 @@ function App() {
     const [limit, setLimit] = useState(10)
     const [page, setPage] = useState(1)
     const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
+    const pagesArray = usePagination(totalPages)
+
     const [fetchPosts, isPostLoading, postError] = useFetching(async ()=>{
         const response = await  PostService.getAll(limit, page)
         setPosts(response.data)
         const totalCount = response.headers['x-total-count']
         setTotalPages(getPageCount(totalCount, limit))
+
     })
 
-    console.log(totalPages)
+
+
 
     useEffect(() => {
         fetchPosts()
@@ -59,6 +64,15 @@ function App() {
                 ? <MyLoader/>
                 : <PostList remove={removePost} posts={sortedAndSearchPosts} title={'Список постов'}/>
             }
+
+            <div className='page__wrapper'>
+                {pagesArray.map(p=>
+                    <span
+                        className={page === p ? 'page page__current' : 'page'}
+                        onClick={()=>setPage(p)}
+                    >{p}</span>
+                )}
+            </div>
 
         </div>
     );

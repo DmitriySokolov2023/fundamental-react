@@ -13,7 +13,6 @@ export  const useSortedPosts = (posts, sort) => {
 export const usePosts = (posts, sort, query) => {
     const sortedPosts = useSortedPosts(posts, sort)
     return useMemo(()=>{
-        console.log(query)
         return sortedPosts.filter(post => post.title.includes(query))
     }, [query, sortedPosts])
 }
