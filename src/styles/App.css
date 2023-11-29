@@ -25,7 +25,10 @@
     align-items: center;
     color: black;
 }
-
+.post__btn{
+    display: flex;
+    justify-content: space-between;
+}
 .post-enter {
     transform: translateX(-350px);
 }
