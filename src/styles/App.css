@@ -63,13 +63,26 @@
 
 .navbar{
     height: 50px;
-    width: 100vw;
+    width: 880px;
     display: flex;
     align-items: center;
     padding: 0 15px;
-    background-color: #eaeaea;
+    background-color: teal;
 }
+.navbar__content{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 
+}
 .navbar__items{
-    margin-left: 50px;
+
+}
+.navbar__item{
+    margin-right: 20px;
+}
+.link{
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
 }

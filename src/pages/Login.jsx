@@ -1,17 +1,23 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import MyInput from "../components/UI/input/MyInput";
 import MyButton from "../components/UI/button/MyButton";
+import {AuthContext} from "../context";
 
 const Login = () => {
-    const authProfile = (e) =>{
+    const {isAuth, setIsAuth} = useContext(AuthContext)
+    const login = (e) =>{
         e.preventDefault()
-        console.log(data)
+        setIsAuth(true)
+        localStorage.setItem('auth', 'true')
     }
+
     const [data, setData] = useState({login:'', pass:''})
     return (
         <div>
             <h1>Страница для логина</h1>
-            <form>
+            <form
+                onSubmit={login}
+            >
                 <MyInput
                     value={data.login}
                     type="text"
@@ -24,9 +30,7 @@ const Login = () => {
                     placeholder='Введите пароль'
                     onChange={e => setData({...data, pass: e.target.value})}
                 />
-                <MyButton
-                    onClick={authProfile}
-                >
+                <MyButton>
                     Войти
                 </MyButton>
             </form>
